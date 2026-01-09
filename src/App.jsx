@@ -51,12 +51,69 @@ It keeps every item except the one whose id matches the given id, and saves this
         handleClearList={handleClearList}
       />{" "}
       {/* Displays list of items */}
-      <Stats items = {items}/> {/* Footer showing stats (currently static) */}
+      <Stats items={items} /> {/* Footer showing stats (currently static) */}
+      <Accordion faqs={faqs} />
     </div>
   );
 }
 
+const faqs = [
+  {
+    title: "Where are these chairs assembled?",
+    text: " Our chairs are assembled in our state-of-the-art facility located in Springfield, USA",
+  },
+  {
+    title: "What is the warranty period for these chairs?",
+    text: "All our chairs come with a standard two-year warranty covering manufacturing defects and workmanship issues.",
+  },
+  {
+    title: "Do you offer customization options for the chairs?",
+    text: "Yes, we offer a range of customization options including fabric choices, colors, and additional features to suit your preferences.",
+  },
+];
 
+function Accordion({ faqs }) {
+  const [curOpen, setCurOpen] = useState(null);
+  return (
+    <div>
+      {faqs.map((el, index) => (
+        <AccordionItem
+          curOpen={curOpen}
+          setCurOpen={setCurOpen}
+          num={index + 1}
+          title={el.title}
+        >
+          {el.text}
+        </AccordionItem>
+      ))}
+      <AccordionItem
+        curOpen={curOpen}
+        setCurOpen={setCurOpen}
+        num={22}
+        title="test 1"
+      >
+        <p><b>Allows React developers to:</b></p>
+        <ul>
+          <li>Break up UI into components </li>
+          <li>Make components reusable</li>
+          <li>Place state efficiently</li>
+        </ul>
+      </AccordionItem>
+    </div>
+  );
+}
 
-
-
+function AccordionItem({ curOpen, setCurOpen, num, title, children }) {
+  const isOpen = curOpen === num;
+  function handleToggle() {
+    setCurOpen(isOpen ? null : num);
+  }
+  return (
+    <div onClick={handleToggle}>
+      <p>{num < 9 ? `0${num}` : num}</p>
+      <h2>{title}</h2>
+      <p>{isOpen ? "-" : "+"}</p>
+      {isOpen && <div>{children}</div>}
+    </div>
+  );
+}
